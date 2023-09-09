@@ -7,9 +7,8 @@ import lombok.ToString;
 @Data
 @AllArgsConstructor
 @ToString
-public class CustomerDTO {
-    String cusID;
-    String cusName;
-    String cusAddress;
-
+public class OrderDetailDTO {
+    private String orderID;
+    private String code;
+    private int qty;
 }
