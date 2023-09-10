@@ -18,7 +18,7 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public boolean save(Connection connection, Order entity) throws SQLException, ClassNotFoundException {
-        return SQLUtil.executeUpdate(connection, "INSERT INTO `Order` VALUES (?,?,?,?)", entity.getOrderID(), entity.getCustomerID(), entity.getTotal(), entity.getDate());
+        return SQLUtil.executeUpdate(connection, "INSERT INTO `Order` VALUES (?,?,?,?,?)", entity.getOrderID(), entity.getDate(), entity.getCustomerID(), entity.getDiscount(),entity.getTotal());
     }
 
     @Override
