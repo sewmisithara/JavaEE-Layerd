@@ -22,7 +22,7 @@ public class ItemBOImpl implements ItemBO, SuperBO {
         ArrayList<ItemDTO> allItems = new ArrayList<>();
         for (Item item :
                 all) {
-            allItems.add(new ItemDTO(item.getCode(), item.getName(), item.getQty(), item.getPrice()));
+            allItems.add(new ItemDTO(item.getCode(), item.getItemName(), item.getQty(), item.getUnitPrice()));
         }
         return allItems;
     }
@@ -34,12 +34,12 @@ public class ItemBOImpl implements ItemBO, SuperBO {
 
     @Override
     public boolean saveItem(Connection connection, ItemDTO item) throws SQLException, ClassNotFoundException {
-        return itemDAO.save(connection, new Item(item.getCode(), item.getName(), item.getQtyOnHand(), item.getPrice()));
+        return itemDAO.save(connection, new Item(item.getCode(), item.getItemName(), item.getQty(), item.getUnitPrice()));
     }
 
     @Override
     public boolean updateItem(Connection connection, ItemDTO item) throws SQLException, ClassNotFoundException {
-        return itemDAO.update(connection, new Item(item.getCode(), item.getName(), item.getQtyOnHand(), item.getPrice()));
+        return itemDAO.update(connection, new Item(item.getCode(), item.getItemName(), item.getQty(), item.getUnitPrice()));
     }
 
     @Override

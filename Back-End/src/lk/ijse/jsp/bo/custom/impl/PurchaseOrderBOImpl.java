@@ -26,22 +26,22 @@ public class PurchaseOrderBOImpl implements PurchaseOrderBO {
     @Override
     public boolean purchaseOrder(Connection connection, OrderDTO order) throws SQLException, ClassNotFoundException {
         connection.setAutoCommit(false);
-        if (!orderDAO.save(connection, new Order(order.getOrderId(), order.getCusId(), order.getCost(), order.getOrderDate()))) {
+        if (!orderDAO.save(connection, new Order(order.getOrderID(), order.getDate(), order.getCusID(), order.getDiscount(),order.getTotal()))) {
             connection.rollback();
             connection.setAutoCommit(true);
             return false;
         }
         for (OrderDetailDTO detailDTO : order.getOrderDetails()) {
-            if (!orderDetailDAO.save(connection, new OrderDetail(detailDTO.getOrderId(), detailDTO.getItemCode(), detailDTO.getPrice(), detailDTO.getQty()))) {
+            if (!orderDetailDAO.save(connection, new OrderDetail(detailDTO.getOrderID(), detailDTO.getCode(), detailDTO.getQty()))) {
                 connection.rollback();
                 connection.setAutoCommit(true);
                 return false;
             }
 
-            ItemDTO item = searchItem(connection, detailDTO.getItemCode());
-            item.setQtyOnHand(item.getQtyOnHand() - detailDTO.getQty());
+            ItemDTO item = searchItem(connection, detailDTO.getCode());
+            item.setQty(item.getQty() - detailDTO.getQty());
 
-            if (!itemDAO.update(connection, new Item(item.getCode(), item.getName(), item.getQtyOnHand(), item.getPrice()))) {
+            if (!itemDAO.update(connection, new Item(item.getCode(), item.getItemName(), item.getQty(), item.getUnitPrice()))) {
                 connection.rollback();
                 connection.setAutoCommit(true);
                 return false;
@@ -60,7 +60,7 @@ public class PurchaseOrderBOImpl implements PurchaseOrderBO {
     @Override
     public ItemDTO searchItem(Connection connection, String code) throws SQLException, ClassNotFoundException {
         Item item = itemDAO.search(connection, code);
-        return new ItemDTO(item.getCode(), item.getName(), item.getQty(), item.getPrice());
+        return new ItemDTO(item.getCode(), item.getItemName(), item.getQty(), item.getUnitPrice());
     }
 
     @Override
